@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Google Maps with Current Location Button</title>
+  <style>
+    #map-container {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+    }
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+    .button-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1000; /* Assurez-vous que le bouton est au-dessus de tout autre contenu */
+    }
+    button {
+      padding: 10px;
+      background-color: #4285F4;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div id="map-container">
+    <iframe id="map-iframe" src="https://www.google.com/maps/embed?pb=!1m52!1m12!1m3!1d5084.901192816587!2d4.442833396864687!3d50.414075823143!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m37!3e2!4m5!1s0x47c226095f93a137%3A0x393c34a0eb632e42!2sPBA%20-%20Palais%20des%20Beaux-Arts%20de%20Charleroi!3m2!1d50.4136057!2d4.4432874!4m5!1s0x47c2295bb1178b29%3A0xb88e83288085610e!2sBPS22%20Mus%C3%A9e%20d&#39;art%20de%20la%20Province%20de%20Hainaut%2C%20Bd%20Solvay%2022%2C%206000%20Charleroi!3m2!1d50.4166124!2d4.4463152!4m5!1s0x47c2260b8ad8cf47%3A0x18d52f61f32ae294!2s%C3%89glise%20Saint-Christophe%20de%20Charleroi!3m2!1d50.411985699999995!2d4.4454204!4m5!1s0x47c2260e1d80eced%3A0xaa4301377e208fe!2sStade%20du%20Pays%20de%20Charleroi!3m2!1d50.4141848!2d4.4527432!4m5!1s0x47c2fe3f675d87c3%3A0x6c037c1fff00190f!2sBiblioth%C3%A8que%20Alfred%20Langlois!3m2!1d50.416865599999994!2d4.448142!4m5!1s0x47c2260f250d9979%3A0x847f04186d101355!2sCampusUCharleroi!3m2!1d50.4163298!2d4.4471012!5e0!3m2!1sfr!2sbe!4v1717524285776!5m2!1sfr!2sbe" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    <div class="button-container">
+      <button onclick="getLocation()">Current Location</button>
+    </div>
+  </div>
+
+  <script>
+    function getLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition, showError);
+      } else {
+        alert("Geolocation is not supported by this browser.");
+      }
+    }
+
+    function showPosition(position) {
+      var lat = position.coords.latitude;
+      var lon = position.coords.longitude;
+      var iframe = document.getElementById("map-iframe");
+      iframe.src = "https://www.google.com/maps/embed/v1/place?key=AIzaSyC3zVmr1bsLGvv8ltAdpBH7jRuYcHj3wwQ&q=" + lat + "," + lon;
+    }
+
+    function showError(error) {
+      switch (error.code) {
+        case error.PERMISSION_DENIED:
+          alert("User denied the request for Geolocation. Please enable location access in your browser settings.");
+          break;
+        case error.POSITION_UNAVAILABLE:
+          alert("Location information is unavailable. Please check your network connection or try again later.");
+          break;
+        case error.TIMEOUT:
+          alert("The request to get user location timed out. Please try again.");
+          break;
+        case error.UNKNOWN_ERROR:
+          alert("An unknown error occurred. Please try again.");
+          break;
+      }
+    }
+  </script>
+</body>
+</html>
